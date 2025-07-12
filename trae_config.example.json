@@ -1,0 +1,56 @@
+{
+  "default_provider": "openai",
+  "max_steps": 50,
+  "model_providers": {
+    "openai": {
+      "model": "gpt-4",
+      "api_key": "your-openai-api-key-here",
+      "base_url": "https://api.openai.com/v1",
+      "max_tokens": 4096,
+      "temperature": 0.5,
+      "top_p": 1,
+      "top_k": 0,
+      "parallel_tool_calls": false,
+      "max_retries": 10
+    },
+    "anthropic": {
+      "model": "claude-3-sonnet-20240229",
+      "api_key": "your-anthropic-api-key-here",
+      "base_url": "https://api.anthropic.com",
+      "max_tokens": 4096,
+      "temperature": 0.5,
+      "top_p": 1,
+      "top_k": 0,
+      "parallel_tool_calls": false,
+      "max_retries": 10
+    },
+    "google": {
+      "model": "gemini-pro",
+      "api_key": "your-google-api-key-here",
+      "max_tokens": 4096,
+      "temperature": 0.5,
+      "top_p": 1,
+      "top_k": 0,
+      "parallel_tool_calls": false,
+      "max_retries": 10,
+      "candidate_count": 1
+    },
+    "azure": {
+      "model": "gpt-4",
+      "api_key": "your-azure-api-key-here",
+      "base_url": "https://your-resource.openai.azure.com",
+      "api_version": "2024-02-15-preview",
+      "max_tokens": 4096,
+      "temperature": 0.5,
+      "top_p": 1,
+      "top_k": 0,
+      "parallel_tool_calls": false,
+      "max_retries": 10
+    }
+  },
+  "enable_lakeview": true,
+  "lakeview_config": {
+    "model_provider": "anthropic",
+    "model_name": "claude-sonnet-4-20250514"
+  }
+}

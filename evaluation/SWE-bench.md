@@ -7,6 +7,7 @@ This document explains how to evaluate [Trae Agent](https://github.com/bytedance
 SWE-bench is a benchmark that evaluates language models on real-world software engineering tasks. It contains GitHub issues from popular Python repositories that have been solved by human developers. The benchmark evaluates whether an agent can generate the correct patch to fix the issue.
 
 The evaluation process involves:
+
 1. **Setup**: Preparing the evaluation environment with Docker containers
 2. **Execution**: Running Trae Agent on SWE-bench instances to generate patches
 3. **Evaluation**: Testing the generated patches against the ground truth using SWE-bench harness
@@ -40,6 +41,7 @@ chmod +x swebench_setup.sh
 ```
 
 This script:
+
 - Clones the SWE-bench repository
 - Checks out a specific commit for reproducibility (it is the most recent commit hash at the time of writing this document.)
 - Creates a Python virtual environment
@@ -134,6 +136,7 @@ python swebench.py \
 ```
 
 **Parameters:**
+
 - `--dataset`: SWE-bench dataset to use
 - `--config-file`: Trae Agent configuration file
 - `--swebench-harness-path`: Path to SWE-bench harness (required for evaluation)
@@ -145,6 +148,7 @@ python swebench.py \
 ### 1. Image Preparation
 
 The script first checks for required Docker images:
+
 - Each SWE-bench instance has a specific Docker image
 - Images are pulled automatically if not present locally
 - Base Ubuntu image is used for preparing Trae Agent
@@ -152,12 +156,14 @@ The script first checks for required Docker images:
 ### 2. Trae Agent Preparation
 
 The script builds Trae Agent in a Docker container:
+
 - Creates artifacts (`trae-agent.tar`, `uv.tar`, `uv_shared.tar`)
 - These artifacts are reused across all instances for efficiency
 
 ### 3. Instance Execution
 
 For each instance:
+
 1. **Container Setup**: Prepares a Docker container with the instance's environment
 2. **Problem Statement**: Writes the GitHub issue description to a file
 3. **Trae Agent Execution**: Runs Trae Agent to generate a patch
@@ -166,6 +172,7 @@ For each instance:
 ### 4. Evaluation
 
 Using SWE-bench harness:
+
 1. **Patch Collection**: Collects all generated patches into `predictions.json`
 2. **Test Execution**: Runs the patches against test suites in Docker containers
 3. **Result Generation**: Produces evaluation results with pass/fail status
