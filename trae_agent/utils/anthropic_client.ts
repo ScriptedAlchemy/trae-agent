@@ -39,12 +39,14 @@ export class AnthropicClient extends BaseLLMClient {
     // Convert messages to Anthropic format
     const anthropicMessages: MessageParam[] = this.parseMessages(messages);
 
-    let currentMessageHistory: MessageParam[];
+    // Update message history like Python does
     if (reuseHistory) {
-      currentMessageHistory = [...this.messageHistory, ...anthropicMessages];
+      this.messageHistory = [...this.messageHistory, ...anthropicMessages];
     } else {
-      currentMessageHistory = anthropicMessages;
+      this.messageHistory = anthropicMessages;
     }
+    
+    const currentMessageHistory = this.messageHistory;
 
     // Add tools if provided
     let toolSchemas: Anthropic.Messages.Tool[] | undefined;
@@ -110,6 +112,7 @@ export class AnthropicClient extends BaseLLMClient {
     let content = "";
     const toolCalls: ToolCall[] = [];
 
+    // Match Python's behavior of adding each content block separately
     for (const contentBlock of response.content) {
       if (contentBlock.type === "text") {
         content += contentBlock.text;
@@ -235,6 +238,11 @@ export class AnthropicClient extends BaseLLMClient {
       result += toolCallResult.error;
     }
     result = result.trim();
+
+    // Ensure content is not empty when is_error is true
+    if (!toolCallResult.success && !result) {
+      result = "Tool execution failed with no error message";
+    }
 
     return {
       tool_use_id: toolCallResult.call_id,
