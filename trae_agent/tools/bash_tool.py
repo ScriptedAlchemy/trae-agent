@@ -11,6 +11,7 @@
 
 import asyncio
 import os
+import re
 from typing import override
 
 from .base import Tool, ToolCallArguments, ToolError, ToolExecResult, ToolParameter
@@ -90,7 +91,9 @@ class _BashSession:
         assert self._process.stderr
 
         # send command to the process
-        self._process.stdin.write(command.encode() + f"; echo '{self._sentinel}'\n".encode())
+        # We need to capture the exit code of the command
+        command_with_sentinel = f"{command}; echo \"EXIT_CODE:$?\" && echo '{self._sentinel}'\n"
+        self._process.stdin.write(command_with_sentinel.encode())
         await self._process.stdin.drain()
 
         # read output from the process, until the sentinel is found
@@ -111,6 +114,14 @@ class _BashSession:
                 f"timed out: bash has not returned in {self._timeout} seconds and must be restarted",
             ) from None
 
+        # Extract the exit code from the output
+        exit_code_match = re.search(r"EXIT_CODE:(\d+)\n?$", output)  # pyright: ignore[reportUnknownArgumentType]
+        command_exit_code = 0
+        if exit_code_match:
+            command_exit_code = int(exit_code_match.group(1))
+            # Remove the EXIT_CODE line from the output
+            output = re.sub(r"EXIT_CODE:\d+\n?$", "", output)  # pyright: ignore[reportUnknownArgumentType]
+
         if output.endswith("\n"):  # pyright: ignore[reportUnknownMemberType]
             output = output[:-1]  # pyright: ignore[reportUnknownVariableType]
 
@@ -118,13 +129,11 @@ class _BashSession:
         if error.endswith("\n"):  # pyright: ignore[reportUnknownMemberType]
             error = error[:-1]  # pyright: ignore[reportUnknownVariableType]
 
-        error_code = self._process.returncode if self._process.returncode is not None else 0
-
         # clear the buffers so that the next output can be read correctly
         self._process.stdout._buffer.clear()  # type: ignore[attr-defined] # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
         self._process.stderr._buffer.clear()  # type: ignore[attr-defined] # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
 
-        return ToolExecResult(output=output, error=error, error_code=error_code)  # pyright: ignore[reportUnknownArgumentType]
+        return ToolExecResult(output=output, error=error, error_code=command_exit_code)  # pyright: ignore[reportUnknownArgumentType]
 
 
 class BashTool(Tool):

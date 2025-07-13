@@ -1,0 +1,75 @@
+{
+  "name": "trae-agent",
+  "version": "0.1.0",
+  "description": "LLM-based agent for general purpose software engineering tasks",
+  "type": "module",
+  "main": "dist/index.cjs",
+  "types": "dist/trae_agent/index.d.ts",
+  "bin": {
+    "trae-cli": "bin/trae-cli.cjs"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "types": "./dist/trae_agent/index.d.ts"
+    }
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "rslib build && npm run postbuild",
+    "postbuild": "mkdir -p dist/trae_agent && cp dist/cli.cjs dist/trae_agent/cli.cjs",
+    "test": "rstest run",
+    "test:watch": "rstest watch",
+    "lint": "eslint . --ext .ts,.js",
+    "format": "prettier --write .",
+    "cli": "node bin/trae-cli.cjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ScriptedAlchemy/trae-agent.git"
+  },
+  "keywords": [
+    "llm",
+    "agent",
+    "ai",
+    "software-engineering",
+    "cli",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ScriptedAlchemy/trae-agent/issues"
+  },
+  "homepage": "https://github.com/ScriptedAlchemy/trae-agent#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.56.0",
+    "@google/generative-ai": "^0.24.1",
+    "chalk": "^5.4.1",
+    "commander": "^14.0.0",
+    "dotenv": "^17.2.0",
+    "inquirer": "^12.7.0",
+    "jsonpath-plus": "^10.3.0",
+    "ollama": "^0.5.16",
+    "openai": "^5.9.0",
+    "ora": "^8.2.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@rslib/core": "^0.0.7",
+    "@rstest/core": "^0.0.7",
+    "@types/inquirer": "^9.0.8",
+    "@types/node": "^24.0.13",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
+    "@typescript-eslint/parser": "^8.36.0",
+    "eslint": "^9.31.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,32 @@
+
+> trae-agent@0.1.0 test
+> rstest run
+
+  Rstest v0.0.7
+
+[?2026h RUNS  tests/utils/openrouter_client.test.ts
+[?2026l[?2026h[K[1A[K ✓ tests/utils/openrouter_client.test.ts (6)
+ ✓ tests/utils/google_client.test.ts (12)
+ ✓ tests/utils/ollama_client.test.ts (13)
+ ✓ tests/tools/json_edit_tool.test.ts (22)
+ ✓ tests/utils/config.test.ts (12)
+ RUNS  tests/tools/edit_tool.test.ts
+ RUNS  tests/tools/bash_tool.test.ts
+[?2026l[?2026h[K[1A[K[1A[K ✓ tests/agent/trae_agent.test.ts (12)
+ ✓ tests/tools/edit_tool.test.ts (39)
+ RUNS  tests/tools/bash_tool.test.ts
+[?2026l[?2026h[K[1A[K RUNS  tests/tools/bash_tool.test.ts
+[?2026l[?2026h[K[1A[K RUNS  tests/tools/bash_tool.test.ts
+[?2026l[?2026h[K[1A[K RUNS  tests/tools/bash_tool.test.ts
+[?2026l[?2026h[K[1A[K RUNS  tests/tools/bash_tool.test.ts
+[?2026l[?2026h[K[1A[K
+[?2026l[K[1A[K ✓ tests/tools/bash_tool.test.ts (18) 5.05s
+  ✓ BashTool > Session Management > should restart bash session when restart parameter is true (807ms)
+  ✓ BashTool > Session Management > should properly manage session object lifecycle on restart (406ms)
+  ✓ BashTool > Session Management > should maintain session state across multiple commands (1.21s)
+  ✓ BashTool > Session Management > should handle restart parameter correctly (605ms)
+
+ Test Files 8 passed
+      Tests 134 passed
+   Duration 5.43s (build 137ms, tests 5.29s)
+
